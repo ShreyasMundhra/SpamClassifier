@@ -30,10 +30,10 @@ def get_sections(email):
 
     return subject, body
 
-def writeDictToCsv(dict):
+def writeDictToCsv(di):
     with open('words.csv','wb') as file_object:
-        for key in dict:
-            file_object.write(key + ',' + str(dict[key]) + '\n')
+        for key in di:
+            file_object.write(key + ',' + str(di[key]) + '\n')
 
 def writeTfIdfToCsv(data):
     tf = vec(input='content', analyzer='word', min_df=0, stop_words='english', sublinear_tf=True, decode_error='ignore',
