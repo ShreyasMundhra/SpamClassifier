@@ -43,12 +43,6 @@ def writeTfIdfToCsv(data):
 
     df = pd.DataFrame(tfidf_matrix.toarray())
     df.to_csv('tfidf.csv')
-    # with open('tfidf.csv', 'wb') as file_object:
-    #     for i in range(0, df.size):
-    #         file_object.write(str(df[i, 0]))
-    #         for j in range(1, df[0].size):
-    #             file_object.write(',' + str(df[i, j]))
-    #         file_object.write('\n')
 
 # create dictionary with the word as key and count as value for entire dataset to find important features for the model
 def get_email_bodies():
@@ -68,15 +62,7 @@ def get_email_bodies():
                 #     else:
                 #         word_count[word] = 0
 
-    # tf = vec(input='content', analyzer='word', min_df=0, stop_words='english', sublinear_tf=True, decode_error='ignore', max_features=100)
-    # tfidf_matrix = tf.fit_transform(data)
-    # print("Features: " + str(tf.get_feature_names()))
-    # return word_count,tfidf_matrix
     return data
 
-# readtxt('Summary.txt')
-# word_dict,tfidf_matrix = get_word_dict()
 data = get_email_bodies()
-# writeDictToCsv(word_dict)
-# writeMatrixToCsv(pd.DataFrame(tfidf_matrix.toarray()))
 writeTfIdfToCsv(data)
