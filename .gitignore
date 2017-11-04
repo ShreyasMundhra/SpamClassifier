@@ -1,4 +1,5 @@
 *.pyc
 train_data/*
 test_data/*
-Summary.txt
+*.txt
+.idea
