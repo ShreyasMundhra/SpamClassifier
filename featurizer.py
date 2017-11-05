@@ -42,8 +42,8 @@ def writeTfIdfToCsv(data):
     tfidf_matrix = tf.fit_transform(data)
     print("Features: " + str(tf.get_feature_names()))
 
-    df = pd.DataFrame(tfidf_matrix.toarray())
-    df.to_csv('tfidf.csv')
+    df = pd.DataFrame(data=tfidf_matrix.toarray(),columns=tf.get_feature_names())
+    df.to_csv('tfidf.csv',index=False)
 
 # create dictionary with the word as key and count as value for entire dataset to find important features for the model
 def get_email_bodies():
