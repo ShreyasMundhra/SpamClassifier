@@ -27,14 +27,19 @@ def get_sections(email):
 
     for line in lines:
         words = tokenizer.tokenize(line)
-        pos = nltk.pos_tag(words)
-        print(pos)
+        # pos = nltk.pos_tag(words)
+        # print(pos)
+        words_no_num = []
         for i in range(0,len(words)):
+            if(words[i].isdigit()):
+                continue
+
+            words_no_num.append(words[i])
             if(words[i].lower() == 'subject'):
                 subject = words[i+1:]
                 break
             if (i == len(words)-1):
-                body = body + words
+                body = body + words_no_num
 
     # print(subject)
     # print(body)
@@ -77,7 +82,7 @@ def get_email_bodies():
 def get_email_bodies_test():
     data = []
     for i in range(1, 801):
-        email = readtxt('test_data/test_email_'+str(i)+'.txt')
+        email = readtxt('test_data/test_email_' + str(i) + '.txt')
         # print(filename)
         subject, body = get_sections(email)
 
