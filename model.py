@@ -30,7 +30,7 @@ if __name__ == "__main__":
     test = test_df
 
     tf = vec(input='content', analyzer='word', min_df=0, max_df = 90, stop_words='english', sublinear_tf=False, decode_error='ignore',
-                 max_features=50000)
+                 ngram_range=(1,5),max_features=50000)
     
     input_to_model = tf.fit_transform(train['body'])
 

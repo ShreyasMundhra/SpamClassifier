@@ -42,7 +42,7 @@ def get_sections(email):
                 body = body + words_no_num
 
     # print(subject)
-    # print(body)
+    print(body)
 
     return subject, body
 
@@ -105,3 +105,47 @@ def evaluate_on_test_set(test, classifier, tf):
     preds = classifier.predict(test_input.toarray())
     create_results_csv(preds)
     # return classifier.score(test_input, test_target)
+
+def get_word_dict(stage):
+    data = list()
+    if(stage == 'train'):
+        temp, classes = get_email_bodies()
+        for t in temp:
+            data.append(t)
+    elif(stage == 'test'):
+        temp = get_email_bodies_test()
+        for t in temp:
+            data.append(t)
+    elif(stage == 'train_test'):
+        temp1, classes = get_email_bodies()
+        temp2 = get_email_bodies_test()
+        for t in temp1+temp2:
+            data.append(t)
+
+    word_count = {}
+    for row in data:
+        words = row.split()
+        for word in words:
+            if (word in word_count.keys()):
+                word_count[word] = word_count[word] + 1
+            else:
+                word_count[word] = 0
+
+    return word_count
+
+def writeDictToCsv(words_dict,filename):
+    with open(filename + '.csv','w') as file_object:
+        for key in words_dict.keys():
+            try:
+                file_object.write(key + ',' + str(words_dict[key]) + '\n')
+            except UnicodeEncodeError:
+                continue
+
+if __name__ == "__main__":
+    train_count = get_word_dict('train')
+    test_count = get_word_dict('test')
+    total_count = get_word_dict('train_test')
+
+    writeDictToCsv(train_count,'train_count')
+    writeDictToCsv(test_count,'test_count')
+    writeDictToCsv(total_count,'train_test_count')
