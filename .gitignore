@@ -1,6 +1,7 @@
 *.pyc
 train_data/*
 test_data/*
+__pycache__/*
 *.DS_Store
 *.txt
 .idea
