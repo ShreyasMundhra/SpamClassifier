@@ -68,11 +68,6 @@ def get_email_bodies():
                 subject, body = get_sections(email)
 
                 data.append(' '.join(body))
-                # for word in body:
-                #     if(word in word_count):
-                #         word_count[word] = word_count[word] + 1
-                #     else:
-                #         word_count[word] = 0
 
     return data, classes
 
@@ -99,10 +94,9 @@ if __name__ == "__main__":
     classifier = LogisticRegression()
     # classifier = RandomForestClassifier()
     # classifier = DecisionTreeClassifier()
-    
+
     targets = train['class'].values
     classifier.fit(input_to_model, targets)
-    # print ('Max auc_roc:', classifier.scores_)
     print(classifier.score(input_to_model, targets))
 
     print(evaluate_on_test_set(test, classifier, tf))
