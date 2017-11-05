@@ -54,9 +54,9 @@ def get_email_bodies():
         if(os.path.isdir('train_data/' + directory)):
             for filename in os.listdir('train_data/' + directory):
                 if directory == 'ham':
-                    classes.append('HAM')
+                    classes.append('0')
                 else:
-                    classes.append('SPAM')
+                    classes.append('1')
                 email = readtxt('train_data/' + directory + '/' + filename)
                 print(filename)
                 subject, body = get_sections(email)
@@ -65,7 +65,29 @@ def get_email_bodies():
 
     return data, classes
 
+def get_email_bodies_test():
+    data = []
+    for filename in os.listdir('test_data/'):
+        email = readtxt('test_data/' + filename)
+        print(filename)
+        subject, body = get_sections(email)
+
+        data.append(' '.join(body))
+
+    return data
+
+def create_results_csv(preds):
+    df = pd.DataFrame()
+    df['email_id'] = [i for i in range(1,len(preds) + 1)]
+    df['labels'] = preds
+
+    df.to_csv('preds.csv',index=False)
+
+
 def evaluate_on_test_set(test, classifier, tf):
     test_input = tf.transform(test['body'])
-    test_target = test['class'].values
-    return classifier.score(test_input, test_target)
+    # test_target = test['class'].values
+
+    preds = classifier.predict(test_input)
+    create_results_csv(preds)
+    # return classifier.score(test_input, test_target)
