@@ -34,23 +34,11 @@ if __name__ == "__main__":
     
     input_to_model = tf.fit_transform(train['body'])
 
-    # alphas = np.array([1,0.1,0.01,0.001,0.0001,0])
     param_grid = {'C': [10 ** -i for i in range(-5, 5)]}
     clf = GridSearchCV(LogisticRegression(penalty='l2'), param_grid)
-    # clf = LogisticRegression()
-    # classifier1 = GaussianNB()
-    # classifier2 = LogisticRegression(C=0.7)
-    # classifier3 = LogisticRegression(C=0.5)
-    # classifier3 = RandomForestClassifier()
-    # classifier4 = DecisionTreeClassifier()
 
     targets = train['class'].values
-    # classifier1.fit(input_to_model, targets)
-    # classifier2.fit(input_to_model, targets)
-    # classifier3.fit(input_to_model, targets)
-    # classifier4.fit(input_to_model, targets)
 
-    # eclf = VotingClassifier(estimators=[('nb',classifier1), ('lr1',classifier2), ('lr2',classifier3)])
     clf.fit(input_to_model.toarray(), targets)
     print(clf.score(input_to_model.toarray(), targets))
     print(evaluate_on_test_set(test, clf, tf))

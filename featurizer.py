@@ -42,7 +42,7 @@ def get_sections(email):
                 body = body + words_no_num
 
     # print(subject)
-    print(body)
+    # print(body)
 
     return subject, body
 
@@ -60,7 +60,6 @@ def writeTfIdfToCsv(data):
     df = pd.DataFrame(data=tfidf_matrix.toarray(),columns=tf.get_feature_names())
     df.to_csv('tfidf.csv',index=False)
 
-# create dictionary with the word as key and count as value for entire dataset to find important features for the model
 def get_email_bodies():
     # word_count = {}
     data = []
@@ -73,7 +72,6 @@ def get_email_bodies():
                 else:
                     classes.append('1')
                 email = readtxt('train_data/' + directory + '/' + filename)
-                # print(filename)
                 subject, body = get_sections(email)
                 data.append(' '.join(body))
 
@@ -83,7 +81,6 @@ def get_email_bodies_test():
     data = []
     for i in range(1, 801):
         email = readtxt('test_data/test_email_' + str(i) + '.txt')
-        # print(filename)
         subject, body = get_sections(email)
 
         data.append(' '.join(body))
