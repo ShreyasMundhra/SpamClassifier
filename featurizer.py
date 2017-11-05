@@ -1,24 +1,34 @@
 import pandas as pd
 import numpy as np
 import os
+import nltk
 from nltk.tokenize import RegexpTokenizer
+from nltk import pos_tag, ne_chunk
 from sklearn.feature_extraction.text import TfidfVectorizer as vec
 
 
 # read txt file
 def readtxt(file):
-    with open(file,'r+', encoding='utf-8', errors='ignore') as file_obj:
+    with open(file,'r+', encoding='latin-1', errors='ignore') as file_obj:
         return file_obj.read()
+
+def sentence_to_wordlist(raw):
+    clean = re.sub("[^a-zA-Z]"," ", raw)
+    words = clean.split()
+    return words
 
 # separate email into sections e.g. sender, receiver, subject, body etc.
 def get_sections(email):
-    tokenizer = RegexpTokenizer(r'\w+')
+    # tokenizer = RegexpTokenizer(r'\w+')
+    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     lines = email.split("\n")
     subject = []
     body = []
 
     for line in lines:
         words = tokenizer.tokenize(line)
+        pos = nltk.pos_tag(words)
+        print(pos)
         for i in range(0,len(words)):
             if(words[i].lower() == 'subject'):
                 subject = words[i+1:]
@@ -26,8 +36,8 @@ def get_sections(email):
             if (i == len(words)-1):
                 body = body + words
 
-    print(subject)
-    print(body)
+    # print(subject)
+    # print(body)
 
     return subject, body
 
@@ -58,18 +68,17 @@ def get_email_bodies():
                 else:
                     classes.append('1')
                 email = readtxt('train_data/' + directory + '/' + filename)
-                print(filename)
+                # print(filename)
                 subject, body = get_sections(email)
-
                 data.append(' '.join(body))
 
     return data, classes
 
 def get_email_bodies_test():
     data = []
-    for filename in os.listdir('test_data/'):
-        email = readtxt('test_data/' + filename)
-        print(filename)
+    for i in range(1, 801):
+        email = readtxt('test_data/test_email_'+str(i)+'.txt')
+        # print(filename)
         subject, body = get_sections(email)
 
         data.append(' '.join(body))
@@ -88,6 +97,6 @@ def evaluate_on_test_set(test, classifier, tf):
     test_input = tf.transform(test['body'])
     # test_target = test['class'].values
 
-    preds = classifier.predict(test_input)
+    preds = classifier.predict(test_input.toarray())
     create_results_csv(preds)
     # return classifier.score(test_input, test_target)
